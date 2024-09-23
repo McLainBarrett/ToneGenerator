@@ -1,0 +1,98 @@
+[gd_scene load_steps=5 format=3 uid="uid://dyv6hxk744bo7"]
+
+[ext_resource type="Script" path="res://Menu.gd" id="1_gvo26"]
+[ext_resource type="Script" path="res://setlabel.gd" id="2_qxpka"]
+[ext_resource type="PackedScene" uid="uid://cvbtj6yby006r" path="res://SignalGenerator.tscn" id="3_88hee"]
+
+[sub_resource type="AudioStreamGenerator" id="AudioStreamGenerator_luukg"]
+buffer_length = 0.03
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_gvo26")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamGenerator_luukg")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.25
+anchor_right = 0.75
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel/MarginContainer"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Signal Generators"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Master Volume: 50%"
+script = ExtResource("2_qxpka")
+format = "Master Volume: %02d%%"
+
+[node name="HSlider" type="HSlider" parent="Panel/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+value = 50.0
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel/MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_right = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/ScrollContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="NewSignalButton" type="Button" parent="Panel/MarginContainer/ScrollContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "New Signal"
+
+[node name="ToggleSignals" type="Button" parent="Panel/MarginContainer/ScrollContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Toggle Signals"
+
+[node name="Generators" type="VBoxContainer" parent="Panel/MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="SignalGenerator" parent="Panel/MarginContainer/ScrollContainer/VBoxContainer/Generators" instance=ExtResource("3_88hee")]
+layout_mode = 2
+
+[connection signal="value_changed" from="Panel/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/HSlider" to="Panel/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Label" method="setText"]
+[connection signal="pressed" from="Panel/MarginContainer/ScrollContainer/VBoxContainer/MarginContainer/HBoxContainer/NewSignalButton" to="." method="newGenerator"]
+[connection signal="pressed" from="Panel/MarginContainer/ScrollContainer/VBoxContainer/MarginContainer/HBoxContainer/ToggleSignals" to="." method="toggleGenerators"]

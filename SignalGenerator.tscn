@@ -1,0 +1,90 @@
+[gd_scene load_steps=4 format=3 uid="uid://cvbtj6yby006r"]
+
+[ext_resource type="Script" path="res://SignalPanel.gd" id="1_pwyjl"]
+[ext_resource type="Texture2D" uid="uid://c8ujne28vmhgd" path="res://Cross.png" id="2_lgxoe"]
+[ext_resource type="Script" path="res://setlabel.gd" id="3_rpu7y"]
+
+[node name="SignalGenerator" type="PanelContainer"]
+script = ExtResource("1_pwyjl")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_right = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="EnableButton" type="CheckButton" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 7
+theme_override_constants/margin_top = 7
+theme_override_constants/margin_right = 7
+theme_override_constants/margin_bottom = 7
+
+[node name="DestroyButton" type="TextureButton" parent="MarginContainer/HBoxContainer/VBoxContainer/MarginContainer"]
+self_modulate = Color(0.496191, 0, 0.104474, 1)
+layout_mode = 2
+size_flags_vertical = 3
+texture_normal = ExtResource("2_lgxoe")
+texture_pressed = ExtResource("2_lgxoe")
+texture_hover = ExtResource("2_lgxoe")
+texture_disabled = ExtResource("2_lgxoe")
+texture_focused = ExtResource("2_lgxoe")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 2
+
+[node name="FreqLabel" type="Label" parent="MarginContainer/HBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Frequency: 0440 Hz"
+script = ExtResource("3_rpu7y")
+format = "Frequency: %04d Hz"
+defaultValue = 440
+
+[node name="FreqSlider" type="HSlider" parent="MarginContainer/HBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 20.0
+max_value = 2000.0
+value = 440.0
+
+[node name="PhaseLabel" type="Label" parent="MarginContainer/HBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Phase: 0°"
+script = ExtResource("3_rpu7y")
+format = "Phase: %d°"
+
+[node name="PhaseSlider" type="HSlider" parent="MarginContainer/HBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -180.0
+max_value = 180.0
+
+[node name="VolLabel" type="Label" parent="MarginContainer/HBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Volume: 50%"
+script = ExtResource("3_rpu7y")
+format = "Volume: %d%%"
+defaultValue = 100
+
+[node name="VolSlider" type="HSlider" parent="MarginContainer/HBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+value = 50.0
+
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/DestroyButton" to="." method="Destroy"]
+[connection signal="value_changed" from="MarginContainer/HBoxContainer/GridContainer/FreqSlider" to="MarginContainer/HBoxContainer/GridContainer/FreqLabel" method="setText"]
+[connection signal="value_changed" from="MarginContainer/HBoxContainer/GridContainer/PhaseSlider" to="MarginContainer/HBoxContainer/GridContainer/PhaseLabel" method="setText"]
+[connection signal="value_changed" from="MarginContainer/HBoxContainer/GridContainer/VolSlider" to="MarginContainer/HBoxContainer/GridContainer/VolLabel" method="setText"]
